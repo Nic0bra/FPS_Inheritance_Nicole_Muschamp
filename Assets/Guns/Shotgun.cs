@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Shotgun : Gun
 {
+    [SerializeField] GameObject bleedEffect;
+
     [SerializeField] float damage = 10;
     [SerializeField] float velocity = 15;
     [SerializeField] float life = 1;
@@ -12,7 +14,7 @@ public class Shotgun : Gun
             return false;
 
         var b = Instantiate(bulletPrefab, gunBarrelEnd.transform.position, gunBarrelEnd.rotation);
-        b.GetComponent<Projectile>().Initialize(damage, velocity, life, force, null); // version without special effect
+        b.GetComponent<Projectile>().Initialize(damage, velocity, life, force, Bleed);
 
         anim.SetTrigger("shoot");
         elapsed = 0;
@@ -20,18 +22,11 @@ public class Shotgun : Gun
 
         return true;
     }
-    //Make blood splatter
-    void DoThing(HitData data)
+    //Make bleed
+    void Bleed(HitData data)
     {
         Vector3 impactLocation = data.location;
 
-        var colliders = Physics.OverlapSphere(impactLocation, 1);
-        foreach (var c in colliders)
-        {
-            if (c.GetComponent<Rigidbody>())
-            {
-                c.GetComponent<Rigidbody>().AddForce(Vector3.up * 20, ForceMode.Impulse);
-            }
-        }
+        Instantiate(bleedEffect, impactLocation, Quaternion.identity);
     }
 }

@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Blaster : Gun
 {
+    [SerializeField] GameObject bleedEffect;
     public override bool AttemptFire()
     {
         if (!base.AttemptFire())
             return false;
 
         var b = Instantiate(bulletPrefab, gunBarrelEnd.transform.position, gunBarrelEnd.rotation);
-        b.GetComponent<Projectile>().Initialize(3, 100, 2, 5, null); // version without special effect
+        b.GetComponent<Projectile>().Initialize(3, 100, 2, 5, Bleed); // version without special effect
         //b.GetComponent<Projectile>().Initialize(1, 100, 2, 5, DoThing); // version with special effect
 
         anim.SetTrigger("shoot");
@@ -20,18 +21,11 @@ public class Blaster : Gun
         return true;
     }
 
-    // example function, make hit enemy fly upward
-    void DoThing(HitData data)
+    //Make bleed
+    void Bleed(HitData data)
     {
         Vector3 impactLocation = data.location;
 
-        var colliders = Physics.OverlapSphere(impactLocation, 1);
-        foreach(var c in colliders)
-        {
-            if(c.GetComponent<Rigidbody>())
-            {
-                c.GetComponent<Rigidbody>().AddForce(Vector3.up * 20, ForceMode.Impulse);
-            }
-        }
+        Instantiate(bleedEffect, impactLocation, Quaternion.identity);
     }
 }
