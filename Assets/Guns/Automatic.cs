@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Shotgun : Gun
+public class Automatic : Gun
 {
-    [SerializeField] float damage = 10;
-    [SerializeField] float velocity = 15;
-    [SerializeField] float life = 1;
-    [SerializeField] float force = 20;
+    [SerializeField] float damage = 1;
+    [SerializeField] float velocity = 200;
+    [SerializeField] float life = 2;
+    [SerializeField] float force = 1;
     public override bool AttemptFire()
     {
         if (!base.AttemptFire())
