@@ -26,6 +26,7 @@ public class Blaster : Gun
     {
         Vector3 impactLocation = data.location;
 
+        //Add particle affect upon impact location
         Instantiate(bleedEffect, impactLocation, Quaternion.identity);
     }
 }
